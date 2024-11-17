@@ -93,9 +93,10 @@ async def doc(bot, update):
         img.save(ph_path, "JPEG")
     await ms.edit("𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝚄𝙿𝙻𝙾𝙰𝙳𝙸𝙽𝙶....")
     c_time = time.time()
-    print(f" Before getting forward This is user id {update.from_user.id}")
+    # print(f" Before getting forward This is user id {update.from_user.id}")
     try:
         forward_id = await db.get_forward(update.from_user.id)
+        lazy_target_chat_id = await db.get_lazy_target_chat_id(update.from_user.id)
     except Exception as e:
         print(e)
         pass
@@ -159,6 +160,24 @@ async def doc(bot, update):
         except Exception as e:
             print(f"Error deleting original file message: {e}")
         
+        # logic to get new file from the lazy_target_chat_id 
+        async for msg in zbot.get_chat_history(lazy_target_chat_id):
+            try:
+                # Check if message has any file type (document, audio, video, etc.)
+                if msg.document or msg.audio or msg.video:
+                    print("Found media message, copying to target...")
+                    await msg.copy(BOT_USERNAME)  # Send to target chat or bot PM
+                    # await asyncio.sleep(2)  # Delay between each file sent
+                    print("Message forwarded successfully!")
+
+                    # Delete message after forwarding
+                    await zbot.delete_messages(lazy_target_chat_id, msg.id)
+                    print(f"Message {msg.id} deleted from target channel.")
+                    break
+            except Exception as e:
+                print(f"Error processing message {msg.id}: {e}")
+                break  # Move to next message on error
+
         await ms.delete()
         os.remove(file_path)
         if ph_path:
@@ -209,6 +228,32 @@ async def doc(bot, update):
         try:
             await file.delete()
             await suc.delete()
+            # 
+            # 
+            # (C) LazyDeveloperr ❤
+            #
+            #
+            async for msg in zbot.get_chat_history(lazy_target_chat_id):
+                try:
+                    # Check if message has any file type (document, audio, video, etc.)
+                    if msg.document or msg.audio or msg.video:
+                        print("After renaming - found New media in target chat- , copying to bot pm...")
+                        await msg.copy(BOT_USERNAME)  # Send to target chat or bot PM
+                        # await asyncio.sleep(2)  # Delay between each file sent
+                        print("Message forwarded to bot pm successfully!")
+
+                        # Delete message after forwarding
+                        await zbot.delete_messages(lazy_target_chat_id, msg.id)
+                        print(f"Message {msg.id} deleted from target channel. ✅")
+                        break
+                except Exception as e:
+                    print(f"Error processing message {msg.id}: {e}")
+                    break  # Move to next message on error
+            # 
+            # 
+            # (C) LazyDeveloperr ❤
+            # 
+            # 
         except Exception as e:
             print(f"Error deleting original file message: {e}")
         

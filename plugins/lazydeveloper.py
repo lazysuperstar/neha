@@ -13,6 +13,7 @@ from pyrogram.errors import (
 # user_forward_data = {}
 St_Session = {}
 handler = {}
+# ! => If you are reading this in 2025 of after that - You can say thanks for this code on telegram @LazyDeveloperr
 
 def manager(id, value):
     global handler
@@ -157,7 +158,6 @@ async def logout_user(c, m):
     # Check if the user has an active session @LazyDeveloperr
     if user_id in St_Session:
         try:
-
             # Clear the user's session from St_Session @LazyDeveloperr
             del St_Session[user_id]
 
@@ -216,23 +216,24 @@ async def rename(client, message):
         chat_id=message.chat.id
     )
     Forward = int(Forward.text)
-    print(f'🔥Set destination chat => {target_chat_id}' )
+    print(f'🔥Set destination chat => {Forward}' )
 
 
     await db.set_forward(message.from_user.id, Forward)
+    await db.set_lazy_target_chat_id(message.from_user.id, target_chat_id)
 
     print(f"Starting to forward files from channel {target_chat_id} to {BOT_USERNAME}.")
 
+
     # Using `ubot` to iterate through chat history in target chat
     file_count = 0
-    
     async for msg in ubot.get_chat_history(target_chat_id):
         try:
             # Check if message has any file type (document, audio, video, etc.)
             if msg.document or msg.audio or msg.video:
                 print("Found media message, copying to target...")
                 await msg.copy(BOT_USERNAME)  # Send to target chat or bot PM
-                await asyncio.sleep(3)  # Delay between each file sent
+                await asyncio.sleep(1)  # Delay between each file sent
                 print("Message forwarded successfully!")
 
                 # Delete message after forwarding
@@ -241,19 +242,20 @@ async def rename(client, message):
                 
                 file_count += 1  # Increment the file_count
 
-                if file_count == 10:
-                    confirm = await client.ask(
-                        chat_id=message.chat.id,
-                        text=f'Completed 10 tasks! Do you want to continue forwarding? (y/n):\n\n'
-                             'Type: `y` (If Yes)\nType: `n` (If No)'
-                    )
+                if file_count == 20:
+                    # confirm = await client.ask(
+                    #     chat_id=message.chat.id,
+                    #     text=f'Completed 10 tasks! Do you want to continue forwarding? (y/n):\n\n'
+                    #          'Type: `y` (If Yes)\nType: `n` (If No)'
+                    # )
 
-                    if "n" in confirm.text.lower():  # If user wants to stop
-                        await confirm.delete()
-                        file_count = 0
-                        break  # Stop forwarding
-                    await confirm.delete()
+                    # if "n" in confirm.text.lower():  # If user wants to stop
+                    #     await confirm.delete()
+                    #     file_count = 0
+                    #     break  # Stop forwarding
+                    # await confirm.delete()
                     file_count = 0
+                    break #jordan has decided to run loop once and get only 20 files at a time 
 
         except Exception as e:
             print(f"Error processing message {msg.id}: {e}")
