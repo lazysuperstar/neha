@@ -10,7 +10,6 @@ from PIL import Image
 import time
 from config import *
 
-
 @Client.on_callback_query(filters.regex('cancel'))
 async def cancel(bot, update):
     try:
@@ -236,7 +235,20 @@ async def doc(bot, update):
             # (C) LazyDeveloperr ❤
             #
             #
-            async for msg in zbot.get_chat_history(lazy_target_chat_id):
+            try:
+                n_lazy_Session = Lazy_session[update.from_user.id]
+                lazybot = Client("Z4renamer", session_string=n_lazy_Session, api_id=API_ID, api_hash=API_HASH)
+                print("Ubot Connected")
+            except Exception as e:
+                print(e)
+
+            # (C) LazyDeveloperr ❤
+            await lazybot.start()
+            print(f"❤UserBot Started🍟")
+            # (C) LazyDeveloperr ❤
+            
+
+            async for msg in lazybot.get_chat_history(lazy_target_chat_id):
                 try:
                     # Check if message has any file type (document, audio, video, etc.)
                     if msg.document or msg.audio or msg.video:
@@ -255,8 +267,13 @@ async def doc(bot, update):
             # 
             # 
             # (C) LazyDeveloperr ❤
+            await lazybot.stop()
+            print(f"❤UserBot stopped🍟")
+            # (C) LazyDeveloperr ❤
             # 
-            # 
+            #
+            #
+            
         except Exception as e:
             print(f"Error deleting original file message = lastt message : {e}")
         

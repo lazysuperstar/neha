@@ -16,8 +16,8 @@ handler = {}
 # ! => If you are reading this in 2025 of after that - You can say thanks for this code on telegram @LazyDeveloperr
 
 def set_session_in_config(id, session_string):
-    from config import String_Session  # Import St_Session to modify it
-    String_Session[id] = session_string
+    from config import Lazy_session  # Import St_Session to modify it
+    Lazy_session[id] = session_string
 
 
 def manager(id, value):

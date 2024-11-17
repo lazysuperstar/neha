@@ -27,4 +27,6 @@ PORT = os.environ.get('PORT', '8080')
 
 String_Session  = "None"
 
+Lazy_session = {}
+
 Permanent_4gb = "-100XXX"
