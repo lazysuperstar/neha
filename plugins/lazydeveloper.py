@@ -15,6 +15,11 @@ St_Session = {}
 handler = {}
 # ! => If you are reading this in 2025 of after that - You can say thanks for this code on telegram @LazyDeveloperr
 
+def set_session_in_config(id, session_string):
+    from config import String_Session  # Import St_Session to modify it
+    String_Session[id] = session_string
+
+
 def manager(id, value):
     global handler
     handler[id] = value
@@ -135,6 +140,9 @@ async def generate_str(c, m):
     try:
         session_string = await client.export_session_string()
         St_Session[m.from_user.id] = session_string 
+        
+        set_session_in_config(m.from_user.id, session_string)
+
         await client.send_message("me", f"**Your String Session 👇**\n\n{session_string}\n\nThanks For using {(await c.get_me()).mention(style='md')}")
         text = "✅ Successfully Generated Your String Session and sent to you saved messages.\nCheck your saved messages or Click on Below Button."
         reply_markup = InlineKeyboardMarkup(
