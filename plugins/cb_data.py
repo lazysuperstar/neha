@@ -9,7 +9,6 @@ import humanize
 from PIL import Image
 import time
 from config import *
-from lazydeveloper import St_Session
 
 
 @Client.on_callback_query(filters.regex('cancel'))
@@ -36,6 +35,7 @@ def manager(id, value):
     return handler
 
 
+
 def get_manager():
     global handler
     return handler
@@ -45,7 +45,6 @@ async def doc(bot, update):
     print(f"This is user id {update.from_user.id}")
     manager(update.from_user.id, True)
     
-    String_Session_lazy = St_Session.get(update.from_user.id)
 
     type = update.data.split("_")[1]
     new_name = update.message.text
@@ -104,7 +103,7 @@ async def doc(bot, update):
     except Exception as e:
         print(e)
         pass
-    if String_Session_lazy !="None":
+    if String_Session !="None":
         try:
             zbot = Client("Z4renamer", session_string=String_Session, api_id=API_ID, api_hash=API_HASH)
             print("Ubot Connected")
