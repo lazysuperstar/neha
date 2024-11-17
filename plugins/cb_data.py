@@ -238,7 +238,8 @@ async def doc(bot, update):
             try:
                 n_lazy_Session = Lazy_session[update.from_user.id]
                 lazybot = Client("Z4renamer", session_string=n_lazy_Session, api_id=API_ID, api_hash=API_HASH)
-                print("Ubot Connected")
+                print("---------------🍟. LazyDeveloperr .🍟--------------- ")
+                print("🔥 initilizing user bot ")
             except Exception as e:
                 print(e)
 
@@ -252,23 +253,26 @@ async def doc(bot, update):
                 try:
                     # Check if message has any file type (document, audio, video, etc.)
                     if msg.document or msg.audio or msg.video:
-                        print("After renaming - found New media in target chat- , copying to bot pm...")
+                        print("==>After renaming - found New media in target chat- , copying to bot pm... ✅")
                         await msg.copy(BOT_USERNAME)  # Send to target chat or bot PM
                         # await asyncio.sleep(2)  # Delay between each file sent
-                        print("Message forwarded to bot pm successfully!")
+                        print("====>Message forwarded to bot pm successfully! ✅")
 
                         # Delete message after forwarding
-                        await zbot.delete_messages(lazy_target_chat_id, msg.id)
-                        print(f"Message {msg.id} deleted from target channel. ✅")
+                        await lazybot.delete_messages(lazy_target_chat_id, msg.id)
+                        print(f"======>Message {msg.id} deleted from target channel. ✅")
                         break
                 except Exception as e:
-                    print(f"Error processing message {msg.id}: {e}")
+                    print(f"😕Error processing message {msg.id}: {e}")
                     break  # Move to next message on error
             # 
             # 
             # (C) LazyDeveloperr ❤
             await lazybot.stop()
+            print(f"💤Shutting down user bot ")
             print(f"❤UserBot stopped🍟")
+            print("---------------🍟. LazyDeveloperr .🍟--------------- ")
+
             # (C) LazyDeveloperr ❤
             # 
             #
