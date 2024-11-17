@@ -255,7 +255,7 @@ async def doc(bot, update):
             # 
             # 
         except Exception as e:
-            print(f"Error deleting original file message: {e}")
+            print(f"Error deleting original file message = lastt message : {e}")
         
         await ms.delete()
         os.remove(file_path)
